@@ -35,6 +35,29 @@ def _append_unique(values: list[str], additions: list[str]) -> list[str]:
     return result
 
 
+def _static_paths(namespace: dict[str, Any]) -> list[str]:
+    paths: list[str] = []
+    conf_file = namespace.get("__file__")
+    local_static = Path(conf_file).resolve().parent / "_static" if conf_file else None
+    shared_local_files = (
+        "css/course.css",
+        "js/course-interactives.js",
+        "js/course-page-toc.js",
+    )
+
+    has_local_static = local_static is not None and local_static.exists()
+    has_local_shared_assets = bool(
+        has_local_static
+        and any((local_static / relative_path).exists() for relative_path in shared_local_files)
+    )
+
+    if has_local_static:
+        paths.append(str(local_static))
+    if not has_local_shared_assets:
+        paths.append(str(asset_path()))
+    return paths
+
+
 def apply_defaults(namespace: dict[str, Any]) -> None:
     """Apply the shared Sphinx/MyST course-site defaults to ``conf.py`` globals."""
     project = namespace.get("project", "Course Notes")
@@ -58,7 +81,7 @@ def apply_defaults(namespace: dict[str, Any]) -> None:
 
     namespace.setdefault("html_theme", "alabaster")
     namespace.setdefault("html_title", project)
-    namespace["html_static_path"] = _append_unique(list(namespace.get("html_static_path", [])), [str(asset_path())])
+    namespace["html_static_path"] = _append_unique(list(namespace.get("html_static_path", [])), _static_paths(namespace))
     namespace["templates_path"] = _append_unique(list(namespace.get("templates_path", [])), [str(asset_path("templates"))])
     namespace.setdefault("html_sidebars", {"**": ["navigation.html"]})
     namespace["html_css_files"] = _append_unique(list(namespace.get("html_css_files", [])), ["css/course.css"])

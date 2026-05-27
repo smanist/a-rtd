@@ -1,0 +1,36 @@
+# Interactive Example
+
+This page demonstrates the reusable interaction infrastructure. The Markdown
+contains only a semantic placeholder; the controls and plot are created in
+`docs/_static/js/examples/demo-plot.js`.
+
+## Demo Plot
+
+:::{course-interactive}
+:data-example: demo-plot
+
+Interactive example loading...
+:::
+
+## Python-backed Demo
+
+:::{course-interactive}
+:data-example: python-demo
+
+Interactive example loading...
+:::
+
+## Implementation Notes
+
+Each example initializer receives the placeholder element, reads optional
+configuration from `data-*` attributes, and renders into that element. Shared
+helpers for controls and lazy-loaded libraries are available on
+`window.CourseInteractives`. Python-backed examples may keep source files under
+`docs/_static/py/examples/` and load them through Pyodide when served over a
+local HTTP server.
+
+## Summary
+
+Interactive examples stay as small semantic placeholders in chapter Markdown,
+with behavior implemented in static JavaScript files and initialized by
+`window.CourseInteractives`.

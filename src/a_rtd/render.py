@@ -26,7 +26,7 @@ def normalize_text(text: str) -> str:
 
 
 def render_template(template_name: str, context: dict[str, Any]) -> str:
-    if template_name.startswith("common/"):
+    if template_name.startswith("common/") or template_name.startswith("examples/"):
         template_path = resources.files("a_rtd").joinpath("templates", template_name)
         return normalize_text(template_path.read_text(encoding="utf-8"))
     return normalize_text(_environment().get_template(template_name).render(**context))

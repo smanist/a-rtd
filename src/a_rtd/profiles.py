@@ -29,6 +29,7 @@ SPHINX_MYST_COURSE = Profile(
         "example_js_files": [],
     },
     managed_files=(
+        ManagedFileSpec(".gitignore", "full", "common/gitignore.j2"),
         ManagedFileSpec(".readthedocs.yaml", "full", "sphinx/readthedocs.yaml.j2"),
         ManagedFileSpec("requirements.txt", "full", "sphinx/requirements.txt.j2"),
         ManagedFileSpec("Makefile", "full", "sphinx/Makefile.j2"),
