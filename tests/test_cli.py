@@ -77,6 +77,14 @@ def test_init_from_existing_and_check_clean(tmp_path: Path) -> None:
     assert 'project = "Fixture Notes"' in conf
     assert '"js/examples/demo-plot.js"' in conf
     assert (tmp_path / ".codex" / "skills" / "split-chapter-pages" / "SKILL.md").is_file()
+    readme = (tmp_path / "README.md").read_text(encoding="utf-8")
+    assert "# Fixture Notes" in readme
+    assert "Sync From" not in readme
+    assert "scripts/prepare-template-sync" not in readme
+    assert "check-local-html:" in (tmp_path / "Makefile").read_text(encoding="utf-8")
+    kill_script = tmp_path / "scripts" / "kill-local-http-server"
+    assert kill_script.is_file()
+    assert kill_script.stat().st_mode & 0o111
 
     check = runner.invoke(app, ["check", "--repo-root", str(tmp_path)])
 

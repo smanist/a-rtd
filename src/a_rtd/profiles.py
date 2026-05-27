@@ -31,6 +31,9 @@ SPHINX_MYST_COURSE = Profile(
     managed_files=(
         ManagedFileSpec(".readthedocs.yaml", "full", "sphinx/readthedocs.yaml.j2"),
         ManagedFileSpec("requirements.txt", "full", "sphinx/requirements.txt.j2"),
+        ManagedFileSpec("Makefile", "full", "sphinx/Makefile.j2"),
+        ManagedFileSpec("README.md", "full", "sphinx/README.md.j2"),
+        ManagedFileSpec("scripts/kill-local-http-server", "full", "common/kill-local-http-server.j2"),
         ManagedFileSpec("docs/conf.py", "block", "sphinx/conf.py.j2", "sphinx-myst-course"),
         ManagedFileSpec("AGENTS.md", "block", "common/AGENTS.md.j2", "global-agent-policy"),
         ManagedFileSpec(

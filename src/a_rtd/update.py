@@ -145,6 +145,8 @@ def apply_plan(plan: FilePlan) -> None:
         return
     plan.path.parent.mkdir(parents=True, exist_ok=True)
     plan.path.write_text(plan.next_text, encoding="utf-8")
+    if plan.spec.path.startswith("scripts/") or "/scripts/" in plan.spec.path:
+        plan.path.chmod(0o755)
 
 
 def refresh_state(config: ARTDConfig, spec: ManagedFileSpec, desired: str) -> None:
