@@ -1,0 +1,29 @@
+<div class="course-sidebar-brand">
+  <a class="course-sidebar-brand__site" href="{{ pathto(master_doc) }}">Interactive Notes</a>
+  <a class="course-sidebar-brand__course" href="{{ pathto(master_doc) }}">{{ project }}</a>
+</div>
+<h3>{{ _('Navigation') }}</h3>
+<ul>
+  {% for item in course_sidebar_items %}
+    <li class="toctree-l1{% if item.current %} current{% endif %}">
+      <a class="{% if pagename == item.docname %}current {% endif %}reference internal" href="{{ pathto(item.docname) }}">{{ item.nav_title }}</a>
+      {% if item.children %}
+        <ul class="current">
+          {% for child in item.children %}
+            <li class="toctree-l2{% if pagename == child.docname %} current{% endif %}">
+              <a class="{% if pagename == child.docname %}current {% endif %}reference internal" href="{{ pathto(child.docname) }}">{{ child.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% if theme_extra_nav_links %}
+<hr />
+<ul>
+    {% for text, uri in theme_extra_nav_links.items() %}
+    <li class="toctree-l1"><a href="{{ uri }}">{{ text }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

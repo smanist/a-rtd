@@ -1,0 +1,22 @@
+Shared instructions for agents working on this Sphinx/MyST course-note repository.
+
+## Documentation Structure
+
+- Keep chapter content in Markdown under `docs/chapters/`.
+- Prefer MyST syntax for math, cross-references, figures, and directives.
+- Keep Sphinx configuration in `docs/conf.py`.
+- Keep browser-side interactive code in static JavaScript files.
+- For top-level or grouped chapter summary sections, use the heading `Summary`.
+
+## MyST Conventions
+
+- Use the repo-local `foldbox` directive for optional derivations.
+- Use the `course-interactive` directive with `:data-example:` for implemented browser examples.
+- Do not put large raw HTML, inline scripts, or implementation logic directly in chapter Markdown.
+- Convert display math written as `$$ ... $$` to MyST math fences.
+
+## Local Workflow
+
+- Use `make html` for a documentation-only build.
+- Use `make check` before handoff when changing chapters, navigation, Sphinx config, or static assets.
+- Use the local HTTP server workflow when verifying interactive examples.

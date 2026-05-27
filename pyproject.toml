@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "a-rtd"
+version = "0.1.0"
+description = "Shared tooling for Sphinx/MyST ReadTheDocs course-note repositories."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "jinja2>=3.1",
+  "pyyaml>=6.0",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+docs = [
+  "myst-parser>=4.0,<5",
+  "sphinx>=8.2,<9",
+]
+test = [
+  "pytest>=8",
+  "sphinx>=8.2,<9",
+  "myst-parser>=4.0,<5",
+]
+
+[project.scripts]
+a-rtd = "a_rtd.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+a_rtd = [
+  "assets/css/*.css",
+  "assets/js/*.js",
+  "assets/templates/*.html",
+  "templates/**/*.j2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

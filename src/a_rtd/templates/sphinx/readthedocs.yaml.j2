@@ -1,0 +1,16 @@
+# Read the Docs configuration file for this Sphinx/MyST site.
+# Managed by a-rtd {{ version }}.
+
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3"
+
+sphinx:
+  configuration: docs/conf.py
+
+python:
+  install:
+    - requirements: requirements.txt
