@@ -6,7 +6,13 @@ from a_rtd.config import new_config
 from a_rtd.manifest import sha256_text
 from a_rtd.profiles import ManagedFileSpec
 from a_rtd.render import render_managed_file
-from a_rtd.update import build_plan, get_current_block, managed_block, refresh_state
+from a_rtd.update import (
+    build_plan,
+    get_current_block,
+    managed_block,
+    refresh_state,
+    replace_or_append_block,
+)
 
 
 def test_render_requirements_template_contains_pinned_package() -> None:
@@ -30,6 +36,17 @@ def test_block_replacement_preserves_local_content(tmp_path: Path) -> None:
 
     assert plan.status == "clean"
     assert get_current_block(spec, path.read_text(encoding="utf-8")) == desired
+
+
+def test_block_replacement_treats_backslashes_literally() -> None:
+    spec = ManagedFileSpec("AGENTS.md", "block", "common/AGENTS.md.j2", "global-agent-policy")
+    desired = managed_block(spec, r"```{math}\n\delta \dot{x}\n```")
+    current = "# Local\n\n" + managed_block(spec, "old managed text") + "\nLocal tail\n"
+
+    next_text = replace_or_append_block(spec, current, desired)
+
+    assert r"\delta \dot{x}" in next_text
+    assert "Local tail" in next_text
 
 
 def test_full_file_local_modification_is_detected(tmp_path: Path) -> None:

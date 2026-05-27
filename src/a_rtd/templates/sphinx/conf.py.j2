@@ -5,5 +5,6 @@ author = {{ variables.author | tojson }}
 a_rtd_theme_description = {{ variables.description | tojson }}
 a_rtd_example_js_files = {{ variables.example_js_files | tojson }}
 extensions = ["a_rtd.sphinx_ext"]
+templates_path = ["_templates"]
 
 apply_defaults(globals())

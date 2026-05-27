@@ -167,12 +167,24 @@ maintaining existing interactive infrastructure.
 
 ## Local Website Workflow
 
-- For quick local checks, start a server from the repository root with
-  `make serve-html`.
-- Visit local pages at `http://localhost:<port>/docs/_build/html/` after a
-  Sphinx build, or serve a built output directory directly.
+- Standardize local browser checks on `127.0.0.1:8765`. Use
+  `make serve-html` from the repository root to build the docs and serve them
+  with `python -m http.server 8765 --bind 127.0.0.1`.
+- Visit local pages at `http://127.0.0.1:8765/docs/_build/html/` after a
+  Sphinx build.
+- Use `make check-local-html` for a quick HTTP smoke test of the built docs
+  server.
 - Prefer the local HTTP server workflow for browser verification, especially
   when an example fetches static assets.
+- When sandbox approval is needed, request the narrow local prefixes for this
+  workflow: `make serve-html`, `make check-local-html`,
+  `python -m http.server 8765 --bind 127.0.0.1`,
+  `curl -sSf http://127.0.0.1:8765`, and
+  `scripts/kill-local-http-server`.
+- For rendered interactive verification, use the Codex Browser plugin against
+  the local URL before saying browser interaction is unavailable. If that plugin
+  is not available in the current session, say so explicitly and report what
+  terminal-only checks were run.
 - Stop repo-local HTTP servers with `scripts/kill-local-http-server <pid>`.
   Do not use raw `kill <pid>` for this workflow.
 

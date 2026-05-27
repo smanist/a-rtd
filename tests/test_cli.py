@@ -77,6 +77,7 @@ def test_init_from_existing_and_check_clean(tmp_path: Path) -> None:
     conf = (tmp_path / "docs" / "conf.py").read_text(encoding="utf-8")
     assert "a-rtd:begin managed" in conf
     assert 'project = "Fixture Notes"' in conf
+    assert 'templates_path = ["_templates"]' in conf
     assert '"js/examples/demo-plot.js"' in conf
     assert (tmp_path / ".codex" / "skills" / "split-chapter-pages" / "SKILL.md").is_file()
     readme = (tmp_path / "README.md").read_text(encoding="utf-8")
@@ -134,6 +135,7 @@ def test_init_with_examples_creates_buildable_starter_site(tmp_path: Path) -> No
 
     assert result.exit_code == 0, result.output
     assert (tmp_path / "docs" / "index.md").is_file()
+    assert ":numbered:" in (tmp_path / "docs" / "index.md").read_text(encoding="utf-8")
     assert (tmp_path / "docs" / "chapters" / "getting-started.md").is_file()
     assert (tmp_path / "docs" / "chapters" / "interactive-example.md").is_file()
     interactive = (tmp_path / "docs" / "chapters" / "interactive-example.md").read_text(encoding="utf-8")
@@ -154,6 +156,7 @@ def test_init_with_examples_creates_buildable_starter_site(tmp_path: Path) -> No
     assert (tmp_path / "docs" / "_static" / "py" / "examples" / "python_demo.py").is_file()
     assert (tmp_path / "tests" / "test_site.py").is_file()
     conf = (tmp_path / "docs" / "conf.py").read_text(encoding="utf-8")
+    assert 'templates_path = ["_templates"]' in conf
     assert '"js/examples/demo-plot.js"' in conf
     assert '"js/examples/python-demo.js"' in conf
 

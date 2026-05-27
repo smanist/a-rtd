@@ -68,7 +68,7 @@ def replace_or_append_block(spec: ManagedFileSpec, current: str | None, desired:
         return desired
     pattern = _block_pattern(spec)
     if pattern.search(current):
-        return normalize_text(pattern.sub(desired, current, count=1))
+        return normalize_text(pattern.sub(lambda _match: desired, current, count=1))
     return normalize_text(current.rstrip() + "\n\n" + desired)
 
 
