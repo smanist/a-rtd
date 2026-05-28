@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import ast
+import random
 import subprocess
 import sys
 from typing import Annotated, Any
@@ -29,6 +30,16 @@ STARTER_EXAMPLE_FILES = {
 }
 
 STARTER_EXAMPLE_JS_FILES = ["js/examples/demo-plot.js", "js/examples/python-demo.js"]
+
+
+def _random_near_hex_color(base: str = "#586503", *, channel_delta: int = 18) -> str:
+    normalized = base.removeprefix("#")
+    channels = [int(normalized[index : index + 2], 16) for index in range(0, 6, 2)]
+    varied = [
+        max(0, min(255, channel + random.randint(-channel_delta, channel_delta)))
+        for channel in channels
+    ]
+    return "#" + "".join(f"{channel:02X}" for channel in varied)
 
 
 def _repo_root(option_root: Path | None) -> Path:
@@ -188,6 +199,7 @@ def init(
     variables = _infer_variables(root)
     if with_examples:
         variables = _with_starter_examples(variables)
+    variables["terminal_background_color"] = _random_near_hex_color()
     config = new_config(profile, variables)
     summary = {"created": 0, "updated": 0, "skipped": 0, "conflict": 0}
     conflicts: list[str] = []

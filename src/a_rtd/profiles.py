@@ -27,9 +27,11 @@ SPHINX_MYST_COURSE = Profile(
         "author": "Course Staff",
         "description": "Static Sphinx/MyST notes with browser-side examples",
         "example_js_files": [],
+        "terminal_background_color": "#586503",
     },
     managed_files=(
         ManagedFileSpec(".gitignore", "full", "common/gitignore.j2"),
+        ManagedFileSpec(".vscode/settings.json", "full", "sphinx/vscode-settings.json.j2"),
         ManagedFileSpec(".readthedocs.yaml", "full", "sphinx/readthedocs.yaml.j2"),
         ManagedFileSpec("requirements.txt", "full", "sphinx/requirements.txt.j2"),
         ManagedFileSpec("Makefile", "full", "sphinx/Makefile.j2"),

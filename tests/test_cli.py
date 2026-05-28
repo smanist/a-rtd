@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,16 @@ from a_rtd.cli import app
 
 
 runner = CliRunner()
+
+
+def assert_terminal_background_near_base(settings_path: Path) -> None:
+    settings = json.loads(settings_path.read_text(encoding="utf-8"))
+    color = settings["workbench.colorCustomizations"]["terminal.background"]
+    assert color.startswith("#")
+    assert len(color) == 7
+    channels = [int(color[index : index + 2], 16) for index in range(1, 7, 2)]
+    base_channels = [0x58, 0x65, 0x03]
+    assert all(abs(channel - base) <= 18 for channel, base in zip(channels, base_channels))
 
 
 def seed_existing_repo(root: Path) -> None:
@@ -73,7 +84,10 @@ def test_init_from_existing_and_check_clean(tmp_path: Path) -> None:
 
     assert result.exit_code == 0, result.output
     assert (tmp_path / ".a-rtd.yml").is_file()
-    assert "docs/_build" in (tmp_path / ".gitignore").read_text(encoding="utf-8")
+    gitignore = (tmp_path / ".gitignore").read_text(encoding="utf-8")
+    assert "docs/_build" in gitignore
+    assert ".vscode/settings.json" in gitignore
+    assert_terminal_background_near_base(tmp_path / ".vscode" / "settings.json")
     conf = (tmp_path / "docs" / "conf.py").read_text(encoding="utf-8")
     assert "a-rtd:begin managed" in conf
     assert 'project = "Fixture Notes"' in conf
@@ -180,7 +194,10 @@ def test_bare_init_defaults_to_examples_and_initializes_git(tmp_path: Path) -> N
     assert result.exit_code == 0, result.output
     assert (tmp_path / ".git").exists()
     assert (tmp_path / ".a-rtd.yml").is_file()
-    assert "docs/_build" in (tmp_path / ".gitignore").read_text(encoding="utf-8")
+    gitignore = (tmp_path / ".gitignore").read_text(encoding="utf-8")
+    assert "docs/_build" in gitignore
+    assert ".vscode/settings.json" in gitignore
+    assert_terminal_background_near_base(tmp_path / ".vscode" / "settings.json")
     assert (tmp_path / "docs" / "index.md").is_file()
     assert (tmp_path / "docs" / "_static" / "js" / "examples" / "demo-plot.js").is_file()
 
